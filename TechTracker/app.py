@@ -68,7 +68,43 @@ def add_task():
              [title, description, user_id], commit=True)
     return redirect(url_for('index'))
 
-# Add more routes for editing and deleting tasks
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        hashed_password = generate_password_hash(password, method='sha256')
+
+        # Check if username already exists
+        existing_user = query_db('SELECT * FROM users WHERE username = ?', [username], one=True)
+        if existing_user:
+            return 'Username already exists!'
+
+        # Insert the new user into the database
+        query_db('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashed_password], commit=True)
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = query_db('SELECT * FROM users WHERE username = ?', [username], one=True)
+
+        if user and check_password_hash(user[2], password):
+            session['logged_in'] = True
+            session['user_id'] = user[0]
+            return redirect(url_for('index'))
+        else:
+            return 'Invalid username or password'
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     init_db(app)
