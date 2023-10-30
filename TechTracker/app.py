@@ -60,6 +60,53 @@ def add_task():
     # For GET request, show the add task form
     return render_template('add_task.html')
 
+@app.route('/edit_task/<int:task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        # Handle the task editing logic here
+        title = request.form['title']
+        description = request.form['description']
+
+        # Update the task in the database based on task_id
+        user_id = session['user_id']
+        query_db('UPDATE tasks SET title=?, description=? WHERE id=? AND user_id=?',
+                 [title, description, task_id, user_id], commit=True)
+
+        return redirect(url_for('index'))
+
+    # Fetch the task details from the database based on task_id
+    user_id = session['user_id']
+    task = query_db('SELECT * FROM tasks WHERE id=? AND user_id=?', [task_id, user_id], one=True)
+
+    if task:
+        # Pass the task details to the edit_task.html template
+        return render_template('edit_task.html', task=task)
+
+    # Handle the case where the task does not exist or doesn't belong to the user
+    return "Task not found or unauthorized"
+
+@app.route('/delete_task/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+
+    # Check if the task with task_id exists and belongs to the user
+    task = query_db('SELECT * FROM tasks WHERE id=? AND user_id=?', [task_id, user_id], one=True)
+
+    if task:
+        # Delete the task from the database
+        query_db('DELETE FROM tasks WHERE id=?', [task_id], commit=True)
+        return redirect(url_for('index'))
+
+    # Handle the case where the task does not exist or doesn't belong to the user
+    return "Task not found or unauthorized"
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
