@@ -1,3 +1,7 @@
+# INF601 - Advanced Programming in Python
+# Clayton Allen
+# Mini Project 3
+
 import sqlite3
 from db import init_db, query_db, close_connection, get_db
 from flask import Flask, request, render_template, redirect, url_for, session, g
