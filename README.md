@@ -47,7 +47,7 @@ To run this Flask project locally or deploy it to a server, follow these steps:
 1. Clone the repository:
 
    ```shell
-   git clone https://github.com/yourusername/your-task-tracker.git
+   git clone https://github.com/Monorail3224/miniproject3CA-.git
 
 2. Create the Virtual Environment:
 
