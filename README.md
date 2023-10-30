@@ -53,14 +53,14 @@ To run this Flask project locally or deploy it to a server, follow these steps:
 
 2. Create the Virtual Environment:
 
-    '''shell
+    ```shell
     python -m venv flaskapp
 
 3. Install the Required Libraries:
 
-    '''shell
+    ```shell
     pip install -r requirements.txt
 
 4. Run the Application
-    '''shell
+    ```shell
     flask run
