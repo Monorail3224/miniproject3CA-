@@ -44,8 +44,10 @@
                     <div class="task-card">
                         <h5 class="card-title">{{ task.title }}</h5>
                         <p class="card-text">{{ task.description }}</p>
+                        <form action="/delete_task/{{ task.id }}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                         <a href="/edit_task/{{ task.id }}" class="btn btn-primary">Edit</a>
-                        <a href="/delete_task/{{ task.id }}" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             {% endfor %}
