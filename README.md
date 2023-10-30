@@ -50,3 +50,17 @@ To run this Flask project locally or deploy it to a server, follow these steps:
 
    ```shell
    git clone https://github.com/yourusername/your-task-tracker.git
+
+2. Create the Virtual Environment:
+
+    '''shell
+    python -m venv flaskapp
+
+3. Install the Required Libraries:
+
+    '''shell
+    pip install -r requirements.txt
+
+4. Run the Application
+    '''shell
+    flask run
