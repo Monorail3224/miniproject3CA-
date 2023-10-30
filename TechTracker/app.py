@@ -37,20 +37,26 @@ def index():
 
         return render_template('index.html', tasks=tasks, username=username)
 
-
-
-
-@app.route('/add_task', methods=['POST'])
+@app.route('/add_task', methods=['GET', 'POST'])
 def add_task():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    title = request.form['title']
-    description = request.form['description']
-    user_id = session.get('user_id')
-    query_db('INSERT INTO tasks (title, description, user_id) VALUES (?, ?, ?)',
-             [title, description, user_id], commit=True)
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        user_id = session['user_id']
+
+        # Insert the new task into the database
+        query_db('INSERT INTO tasks (title, description, user_id) VALUES (?, ?, ?)',
+                 [title, description, user_id], commit=True)
+
+        return redirect(url_for('index'))
+
+    # For GET request, show the add task form
+    return render_template('add_task.html')
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
