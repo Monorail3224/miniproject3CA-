@@ -27,7 +27,17 @@ def index():
     else:
         user_id = session.get('user_id')
         tasks = query_db('SELECT * FROM tasks WHERE user_id = ?', [user_id])
-        return render_template('index.html', tasks=tasks)
+
+        # Query the username using the user_id
+        user = query_db('SELECT username FROM users WHERE id = ?', [user_id], one=True)
+        if user:
+            username = user[0]  # Accessing the first element of the tuple
+        else:
+            username = 'Unknown'  # or handle this case as you see fit
+
+        return render_template('index.html', tasks=tasks, username=username)
+
+
 
 
 @app.route('/add_task', methods=['POST'])
