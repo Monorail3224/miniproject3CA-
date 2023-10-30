@@ -5,8 +5,6 @@
 - [Features](#features)
 - [How It Works](#how-it-works)
 - [Getting Started](#getting-started)
-- [Dependencies](#dependencies)
-- [License](#license)
 
 ## Overview
 
